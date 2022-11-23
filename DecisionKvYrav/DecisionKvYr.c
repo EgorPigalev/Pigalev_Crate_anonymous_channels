@@ -3,64 +3,70 @@
 #include <stdio.h>
 #include <math.h>
 
-void decision(float a, float b, float c, char* fileNameResult);
+char* decision(float a, float b, float c, char* fileNameResult);
 
 int main(int argc, char* argv[])
 {
-	const char* fileNameResult = "..\\Result.txt";
-	for (int i = 0; i < argc; i++)
-	{
-		printf("%s\n", argv[i]);
-	}
 	HANDLE hWrite = (HANDLE)atoi(argv[0]);
-	//HANDLE hRead = (HANDLE)atoi(argv[1]);
-	/*DWORD d1;
+	HANDLE hRead = (HANDLE)atoi(argv[1]);
+	DWORD d1;
 	LPSTR buffer = calloc(256, 1);
 	BOOL b = ReadFile(hRead, buffer, 256, &d1, NULL);
-	printf("%p %p\n", hWrite, hRead);
-	printf("дочерний процесс принял строку: %s\n", buffer);
-	free(buffer);*/
-	DWORD f;
-	BOOL b = WriteFile(hWrite, "fgfgfgfg", 9, &f, NULL);
-	/*float d[3];
-	for (int i = 0; i < 3; i++)
+	float d[3];
+	int i = 0;
+	char* istr;
+	istr = strtok(buffer, " ");
+	while (istr != NULL)
 	{
-		d[i] = atof(argv[i]);
+		d[i] = atof(istr);
+		i++;
+		istr = strtok(NULL, " ");
 	}
+	free(buffer);
+	char* result = calloc(256, 1);
 	if (d[0] == 0)
 	{
-		printf("Коэфицент a не может принимать значение 0 (ноль)!");
+		sprintf(result, "%s\n", "Коэфицент a не может принимать значение 0 (ноль)!");
 		return 0;
 	}
 	if (d[0] == -107374176. || d[1] == -107374176. || d[2] == -107374176. || isinf(d[0]) != 0 || isinf(d[1]) != 0 || isinf(d[2]) != 0)
 	{
-		printf("Входные данные неккоректны!");
+		sprintf(result, "%s\n", "Входные данные неккоректны!");
 		return 0;
-	}*/
-	//decision(d[0], d[1], d[2], fileNameResult);
+	}
+	result = decision(d[0], d[1], d[2], result);
+	DWORD f;
+	BOOL k = WriteFile(hWrite, result, 256, &f, NULL);
 	return 0;
 }
 
-void decision(float a, float b, float c, char* fileNameResult)
+char* decision(float a, float b, float c, char* result)
 {
-	/*FILE* fileResult = fopen(fileNameResult, "w");
-	fprintf(fileResult, "Уравнение: %g*a + %g * b + %g = 0\n", a, b, c);
+	char* primer = calloc(100, 1);
+	sprintf(primer, "Уравнение: %g*a + %g * b + %g = 0\n", a, b, c);
+	sprintf(result, "%s%s", result, primer);
 	float D = b * b - 4 * a * c;
-	fprintf(fileResult, "Дискриминант равен %g\n", D);
+	char* disc = calloc(100, 1);
+	sprintf(disc, "Дискриминант равен %g\n", D);
+	sprintf(result, "%s%s", result, disc);
 	if (D > 0)
 	{
 		float x1 = (-b - sqrt(D)) / (2 * a);
 		float x2 = (-b + sqrt(D)) / (2 * a);
-		fprintf(fileResult, "Данное уравнение имеет два корня:\n%g %g", x1, x2);
+		char* str = calloc(100, 1);
+		sprintf(str, "Данное уравнение имеет два корня:\n%g %g", x1, x2);
+		sprintf(result, "%s%s", result, str);
 	}
 	else if (D == 0)
 	{
 		float x = (-b) / (2 * a);
-		fprintf(fileResult, "Данное уравнение имеет один корень:\n%g", x);
+		char* str = calloc(100, 1);
+		sprintf(str, "Данное уравнение имеет один корень:\n%g", x);
+		sprintf(result, "%s%s", result, str);
 	}
 	else if (D < 0)
 	{
-		fprintf(fileResult, "Действительных корней нет\n");
+		sprintf(result, "%s%s", result, "Действительных корней нет\n");
 	}
-	fclose(fileResult);*/
+	return result;
 }

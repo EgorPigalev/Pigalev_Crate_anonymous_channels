@@ -1,5 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
-#define PATH "C:\\Users\\ѕигалев≈ƒ\\source\\repos\\Pigalev_Crate_anonymous_channels\\Debug\\DecisionKvYrav.exe"
+#define PATH "..\\Debug\\DecisionKvYrav.exe"
 
 #include <Windows.h>
 #include <stdio.h>
@@ -25,16 +25,15 @@ int main()
 	char* str = calloc(100, sizeof(char));
 	sprintf(str, "%f %f %f", d[0], d[1], d[2]);
 	char* command_line = str;
+	SECURITY_ATTRIBUTES sa = { sizeof(sa), NULL, TRUE };
+	HANDLE hRead, hWrite;
+	BOOL b = CreatePipe(&hRead, &hWrite, &sa , 256);
+	DWORD f;
+	b = WriteFile(hWrite, command_line, 256, &f, NULL);
+	LPCSTR cmd = calloc(4, 1);
+	sprintf(cmd, "%d %d", hWrite, hRead);
 	LPSTARTUPINFOA sti = calloc(1, sizeof(STARTUPINFO));
 	LPPROCESS_INFORMATION li = calloc(1, sizeof(PROCESS_INFORMATION));
-	HANDLE hRead, hWrite;
-	BOOL b = CreatePipe(&hRead, &hWrite, NULL, 256);
-	//DWORD f;
-	//b = WriteFile(hWrite, command_line, 256, &f, NULL);
-	
-	
-	LPCSTR cmd = calloc(4, 1);
-	sprintf(cmd, "%d", hWrite);
 	if (!CreateProcessA(
 		PATH, 
 		cmd,
@@ -52,7 +51,11 @@ int main()
 		return;
 	}
 	WaitForSingleObject(li->hProcess, INFINITE);
-	printf("я дождусь завершени€ дочернего процесса");
+	printf("я дождусь завершени€ дочернего процесса\n");
+	DWORD ecode;
+	GetExitCodeProcess(li->hProcess, &ecode);
+	CloseHandle(li->hProcess);
+	CloseHandle(li->hThread);
 
 	DWORD d1;
 	LPSTR buffer = calloc(256, 1);
@@ -60,10 +63,8 @@ int main()
 	printf("%s\n", buffer);
 	free(buffer);
 
-	DWORD ecode;
-	GetExitCodeProcess(li->hProcess, &ecode);
-	CloseHandle(li->hProcess);
-	CloseHandle(li->hThread);
+	CloseHandle(hRead);
+	CloseHandle(hWrite);
 	//float r[2]; // результат
 
 	//DWORD d1;
