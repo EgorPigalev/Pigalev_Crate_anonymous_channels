@@ -1,9 +1,6 @@
-#define _CRT_SECURE_NO_WARNINGS
 #define PATH "..\\Debug\\DecisionKvYrav.exe"
 
-#include <Windows.h>
-#include <stdio.h>
-
+#include "Header.h"
 
 int main()
 {
@@ -30,8 +27,15 @@ int main()
 	BOOL b = CreatePipe(&hRead, &hWrite, &sa , 256);
 	DWORD f;
 	b = WriteFile(hWrite, command_line, 256, &f, NULL);
-	LPCSTR cmd = calloc(4, 1);
-	sprintf(cmd, "%d %d", hWrite, hRead);
+	LPCSTR cmd = calloc(12, 1);
+	struct Result result;
+	result.equation = "gggfffffffffffgf";
+	LPCSTR cmd1 = calloc(4, 1);
+	sprintf(cmd1, "%d", &result);
+	printf("%d\n", atoi(cmd1));
+	sprintf(cmd, "%d %d %d", hWrite, hRead, &result);
+	/*struct Result* result1 = atoi(cmd1);
+	printf("gffg %s\n", result1->equation);*/
 	LPSTARTUPINFOA sti = calloc(1, sizeof(STARTUPINFO));
 	LPPROCESS_INFORMATION li = calloc(1, sizeof(PROCESS_INFORMATION));
 	if (!CreateProcessA(
@@ -56,32 +60,17 @@ int main()
 	GetExitCodeProcess(li->hProcess, &ecode);
 	CloseHandle(li->hProcess);
 	CloseHandle(li->hThread);
-
+	printf("Дочерний процесс завершился с кодом %d\n", ecode);
 	DWORD d1;
 	LPSTR buffer = calloc(256, 1);
 	BOOL l = ReadFile(hRead, buffer, 256, &d1, NULL);
-	printf("%s\n", buffer);
+	//printf("%s\n", buffer);
+	//printf("%d\n", atoi(buffer));
+	//struct Result *r = atoi(buffer);
+	//printf("%s\n", r->equation);
 	free(buffer);
 
 	CloseHandle(hRead);
 	CloseHandle(hWrite);
-	//float r[2]; // результат
-
-	//DWORD d1;
-	//LPSTR buffer = calloc(256, 1);
-	//b = ReadFile(hRead, buffer, 256, &d1, NULL);
-	//
-	//if (r[0] != -107374176. && r[1] != -107374176.)
-	//{
-	//	printf("\nУравнение имеет два корня: %g и %g", r[0], r[1]);
-	//}
-	//else if (r[0] != -107374176.)
-	//{
-	//	printf("\nУравнение имеет один корень: %g", r[0]);
-	//}
-	//else
-	//{
-	//	printf("\nУравнение не имеет ни одного корня");
-	//}
 	return 0;
 }
