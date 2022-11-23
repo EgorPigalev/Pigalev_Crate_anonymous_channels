@@ -24,18 +24,20 @@ int main(int argc, char* argv[])
 	}
 	free(buffer);
 	char* result = calloc(256, 1);
+	DWORD f;
 	if (d[0] == 0)
 	{
 		sprintf(result, "%s\n", "Коэфицент a не может принимать значение 0 (ноль)!");
+		BOOL k = WriteFile(hWrite, result, 256, &f, NULL);
 		return 0;
 	}
 	if (d[0] == -107374176. || d[1] == -107374176. || d[2] == -107374176. || isinf(d[0]) != 0 || isinf(d[1]) != 0 || isinf(d[2]) != 0)
 	{
 		sprintf(result, "%s\n", "Входные данные неккоректны!");
+		BOOL k = WriteFile(hWrite, result, 256, &f, NULL);
 		return 0;
 	}
 	result = decision(d[0], d[1], d[2], result);
-	DWORD f;
 	BOOL k = WriteFile(hWrite, result, 256, &f, NULL);
 	return 0;
 }
