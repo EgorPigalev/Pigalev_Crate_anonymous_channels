@@ -8,14 +8,21 @@ void decision(float a, float b, float c, char* fileNameResult);
 int main(int argc, char* argv[])
 {
 	const char* fileNameResult = "..\\Result.txt";
+	for (int i = 0; i < argc; i++)
+	{
+		printf("%s\n", argv[i]);
+	}
 	HANDLE hWrite = (HANDLE)atoi(argv[0]);
-	HANDLE hRead = (HANDLE)atoi(argv[1]);
-	DWORD d1;
+	//HANDLE hRead = (HANDLE)atoi(argv[1]);
+	/*DWORD d1;
 	LPSTR buffer = calloc(256, 1);
 	BOOL b = ReadFile(hRead, buffer, 256, &d1, NULL);
+	printf("%p %p\n", hWrite, hRead);
 	printf("дочерний процесс принял строку: %s\n", buffer);
-	free(buffer);
-	float d[3];
+	free(buffer);*/
+	DWORD f;
+	BOOL b = WriteFile(hWrite, "fgfgfgfg", 9, &f, NULL);
+	/*float d[3];
 	for (int i = 0; i < 3; i++)
 	{
 		d[i] = atof(argv[i]);
@@ -29,14 +36,14 @@ int main(int argc, char* argv[])
 	{
 		printf("Входные данные неккоректны!");
 		return 0;
-	}
-	decision(d[0], d[1], d[2], fileNameResult);
+	}*/
+	//decision(d[0], d[1], d[2], fileNameResult);
 	return 0;
 }
 
 void decision(float a, float b, float c, char* fileNameResult)
 {
-	FILE* fileResult = fopen(fileNameResult, "w");
+	/*FILE* fileResult = fopen(fileNameResult, "w");
 	fprintf(fileResult, "Уравнение: %g*a + %g * b + %g = 0\n", a, b, c);
 	float D = b * b - 4 * a * c;
 	fprintf(fileResult, "Дискриминант равен %g\n", D);
@@ -55,5 +62,5 @@ void decision(float a, float b, float c, char* fileNameResult)
 	{
 		fprintf(fileResult, "Действительных корней нет\n");
 	}
-	fclose(fileResult);
+	fclose(fileResult);*/
 }

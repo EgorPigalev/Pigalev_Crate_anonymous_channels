@@ -1,5 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
-#define PATH "..\\x64\\Debug\\DecisionKvYrav.exe"
+#define PATH "C:\\Users\\ПигалевЕД\\source\\repos\\Pigalev_Crate_anonymous_channels\\Debug\\DecisionKvYrav.exe"
 
 #include <Windows.h>
 #include <stdio.h>
@@ -29,12 +29,14 @@ int main()
 	LPPROCESS_INFORMATION li = calloc(1, sizeof(PROCESS_INFORMATION));
 	HANDLE hRead, hWrite;
 	BOOL b = CreatePipe(&hRead, &hWrite, NULL, 256);
-	DWORD f;
-	b = WriteFile(hWrite, command_line, 256, &f, NULL);
+	//DWORD f;
+	//b = WriteFile(hWrite, command_line, 256, &f, NULL);
+	
+	
 	LPCSTR cmd = calloc(4, 1);
-	sprintf(cmd, "%d %d", hWrite, hRead);
+	sprintf(cmd, "%d", hWrite);
 	if (!CreateProcessA(
-		PATH,
+		PATH, 
 		cmd,
 		NULL,
 		NULL,
@@ -51,27 +53,34 @@ int main()
 	}
 	WaitForSingleObject(li->hProcess, INFINITE);
 	printf("Я дождусь завершения дочернего процесса");
+
+	DWORD d1;
+	LPSTR buffer = calloc(256, 1);
+	BOOL l = ReadFile(hRead, buffer, 256, &d1, NULL);
+	printf("%s\n", buffer);
+	free(buffer);
+
 	DWORD ecode;
 	GetExitCodeProcess(li->hProcess, &ecode);
 	CloseHandle(li->hProcess);
 	CloseHandle(li->hThread);
-	float r[2]; // результат
+	//float r[2]; // результат
 
-	DWORD d1;
-	LPSTR buffer = calloc(256, 1);
-	b = ReadFile(hRead, buffer, 256, &d1, NULL);
-	
-	if (r[0] != -107374176. && r[1] != -107374176.)
-	{
-		printf("\nУравнение имеет два корня: %g и %g", r[0], r[1]);
-	}
-	else if (r[0] != -107374176.)
-	{
-		printf("\nУравнение имеет один корень: %g", r[0]);
-	}
-	else
-	{
-		printf("\nУравнение не имеет ни одного корня");
-	}
+	//DWORD d1;
+	//LPSTR buffer = calloc(256, 1);
+	//b = ReadFile(hRead, buffer, 256, &d1, NULL);
+	//
+	//if (r[0] != -107374176. && r[1] != -107374176.)
+	//{
+	//	printf("\nУравнение имеет два корня: %g и %g", r[0], r[1]);
+	//}
+	//else if (r[0] != -107374176.)
+	//{
+	//	printf("\nУравнение имеет один корень: %g", r[0]);
+	//}
+	//else
+	//{
+	//	printf("\nУравнение не имеет ни одного корня");
+	//}
 	return 0;
 }
