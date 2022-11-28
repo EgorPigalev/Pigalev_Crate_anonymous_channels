@@ -1,4 +1,4 @@
-#define PATH "C:\\Users\\ÏèãàëåâÅÄ\\source\\repos\\Pigalev_Crate_anonymous_channels\\Debug\\DecisionKvYrav.exe"
+#define PATH "..\\Debug\\DecisionKvYrav.exe"
 
 #include "..\\Pigalev_Crate_anonymous_channels\Header.h"
 
@@ -48,13 +48,12 @@ int main()
 		printf("CreateProcess failed (%d).\n", GetLastError());
 		return;
 	}
-	Sleep(2000);
+	Sleep(1000);
 	struct Result res;
 	DWORD d1;
-	// LPSTR buffer = calloc(256, 1);
 	BOOL l = ReadFile(hRead, &res, sizeof(struct Result), &d1, NULL);
 
-	printf("%s\n", res.equation);
+	printf("%s\n%s\n%s", res.answer, res.d, res.equation);
 
 	DWORD ecode;
 	WaitForSingleObject(li->hProcess, INFINITE);
@@ -63,8 +62,6 @@ int main()
 	GetExitCodeProcess(li->hProcess, &ecode);
 	CloseHandle(li->hProcess);
 	CloseHandle(li->hThread);
-	
-	//free(buffer);
 
 	CloseHandle(hRead);
 	CloseHandle(hWrite);

@@ -21,36 +21,22 @@ int main(int argc, char* argv[])
 	}
 	free(buffer);
 	DWORD f;
-	struct Result result = {
-		result.equation = "544545455555555"
-	};
+	struct Result result;
 	if (d[0] == 0)
 	{
 		result.equation = "Коэфицент a не может принимать значение 0 (ноль)!";
-		//BOOL k = WriteFile(hWrite, res, 256, &f, NULL);
+		BOOL k = WriteFile(hWrite, &result, sizeof(struct Result), &f, NULL);
 		return 0;
 	}
 	if (d[0] == -107374176. || d[1] == -107374176. || d[2] == -107374176. || isinf(d[0]) != 0 || isinf(d[1]) != 0 || isinf(d[2]) != 0)
 	{
 		result.equation = "Входные данные неккоректны!";
-		//BOOL k = WriteFile(hWrite, result.equation, 256, &f, NULL);
+		BOOL k = WriteFile(hWrite, &result, sizeof(struct Result), &f, NULL);
 		return 0;
 	}
-	//char* str = calloc(4, 1);
-	//sprintf(str, "%d", &result);
-	/*struct Result* res = atoi(str);
-	*/
-
-
-	//char *a = calloc(100, 1);
-	//char* h = calloc(100, 1);
-	//sprintf(h, "%d", result);
-	//memcpy(a, &result, sizeof(struct Result));
-	
-	//printf("%s\n", result.equation);
-
+	decision(d[0], d[1], d[2], &result);
 	BOOL k = WriteFile(hWrite, &result, sizeof(struct Result), &f, NULL);
-	Sleep(5000);
+	printf("%s\n%s\n%s", result.answer, result.d, result.equation);
 	return 0;
 }
 
@@ -68,19 +54,19 @@ char* decision(float a, float b, float c, struct Result *result)
 		float x1 = (-b - sqrt(D)) / (2 * a);
 		float x2 = (-b + sqrt(D)) / (2 * a);
 		char* str = calloc(100, 1);
-		sprintf(str, "Данное уравнение имеет два корня:\n%g %g", x1, x2);
-		sprintf(result, "%s%s", result, str);
+		sprintf(str, "Данное уравнение имеет два корня: %g %g", x1, x2);
+		result->equation = str;
 	}
 	else if (D == 0)
 	{
 		float x = (-b) / (2 * a);
 		char* str = calloc(100, 1);
-		sprintf(str, "Данное уравнение имеет один корень:\n%g", x);
-		sprintf(result, "%s%s", result, str);
+		sprintf(str, "Данное уравнение имеет один корень: %g", x);
+		result->equation = str;
 	}
 	else if (D < 0)
 	{
-		sprintf(result, "%s%s", result, "Действительных корней нет\n");
+		result->equation = "Действительных корней нет";
 	}
 	return result;
 }
