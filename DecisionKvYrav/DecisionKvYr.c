@@ -1,5 +1,4 @@
 #include "..\\Pigalev_Crate_anonymous_channels\Header.h"
-#include "DecisionKvYr.h"
 
 char* decision(float a, float b, float c, char* fileNameResult);
 
@@ -22,7 +21,9 @@ int main(int argc, char* argv[])
 	}
 	free(buffer);
 	DWORD f;
-	struct Result result;
+	struct Result result = {
+		result.equation = "544545455555555"
+	};
 	if (d[0] == 0)
 	{
 		result.equation = "Коэфицент a не может принимать значение 0 (ноль)!";
@@ -35,16 +36,21 @@ int main(int argc, char* argv[])
 		//BOOL k = WriteFile(hWrite, result.equation, 256, &f, NULL);
 		return 0;
 	}
-	//decision(d[0], d[1], d[2], *result);
-	result.equation = "hggh";
-	/*char* str = calloc(256, 1);
-	sprintf(str, "%d", &result);
-	struct Result res = (struct Result)atoi(str);
-	printf("%s\n", res->equation);*/
-	char* ptr = (char*)(&result);
-	char* mem = calloc(1000, 1);
-	memcpy(mem, ptr, sizeof(struct Result));
-	BOOL k = WriteFile(hWrite, mem, 256, &f, NULL);
+	//char* str = calloc(4, 1);
+	//sprintf(str, "%d", &result);
+	/*struct Result* res = atoi(str);
+	*/
+
+
+	//char *a = calloc(100, 1);
+	//char* h = calloc(100, 1);
+	//sprintf(h, "%d", result);
+	//memcpy(a, &result, sizeof(struct Result));
+	
+	//printf("%s\n", result.equation);
+
+	BOOL k = WriteFile(hWrite, &result, sizeof(struct Result), &f, NULL);
+	Sleep(5000);
 	return 0;
 }
 

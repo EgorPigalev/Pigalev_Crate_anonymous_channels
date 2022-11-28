@@ -1,4 +1,4 @@
-#define PATH "..\\Debug\\DecisionKvYrav.exe"
+#define PATH "C:\\Users\\ѕигалев≈ƒ\\source\\repos\\Pigalev_Crate_anonymous_channels\\Debug\\DecisionKvYrav.exe"
 
 #include "..\\Pigalev_Crate_anonymous_channels\Header.h"
 
@@ -48,22 +48,23 @@ int main()
 		printf("CreateProcess failed (%d).\n", GetLastError());
 		return;
 	}
+	Sleep(2000);
+	struct Result res;
+	DWORD d1;
+	// LPSTR buffer = calloc(256, 1);
+	BOOL l = ReadFile(hRead, &res, sizeof(struct Result), &d1, NULL);
+
+	printf("%s\n", res.equation);
+
+	DWORD ecode;
 	WaitForSingleObject(li->hProcess, INFINITE);
 	printf("я дождусь завершени€ дочернего процесса\n");
-	DWORD ecode;
+
 	GetExitCodeProcess(li->hProcess, &ecode);
 	CloseHandle(li->hProcess);
 	CloseHandle(li->hThread);
-
-	DWORD d1;
-	LPSTR buffer = calloc(256, 1);
-	BOOL l = ReadFile(hRead, buffer, 256, &d1, NULL);
-	/*printf("%d\n", atoi(buffer));
-	struct Result *res = atoi(buffer);
-	printf("%s\n", res->equation);*/
-	struct Result* result = (struct Result*)(buffer);
-	printf("%s\n", result->equation);
-	free(buffer);
+	
+	//free(buffer);
 
 	CloseHandle(hRead);
 	CloseHandle(hWrite);
