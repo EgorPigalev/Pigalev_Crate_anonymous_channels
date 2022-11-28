@@ -48,16 +48,36 @@ int main()
 		printf("CreateProcess failed (%d).\n", GetLastError());
 		return;
 	}
-	Sleep(1000);
+	Sleep(100);
 	struct Result res;
 	DWORD d1;
 	BOOL l = ReadFile(hRead, &res, sizeof(struct Result), &d1, NULL);
 
-	printf("%s\n%s\n%s", res.answer, res.d, res.equation);
+	if (res.eror != -858993460)
+	{
+		printf("Входные данные неккоректны!");
+	}
+	else
+	{
+		printf("Уравнение: %g*a + %g * b + %g = 0\n", d[0], d[1], d[2]);
+		if (res.x1 != -107374176. && res.x2 != -107374176.)
+		{
+			printf("Данное уравнение имеет два корня: %g %g", res.x1, res.x2);
+		}
+		else if (res.x1 != -107374176.)
+		{
+			printf("Данное уравнение имеет один корень: %g", res.x1);
+		}
+		else
+		{
+			printf("Действительных корней нет\n");
+		}
+	}
+
+	//printf("%g\n%g\n%d\n", res.x1, res.x2, res.eror);
 
 	DWORD ecode;
 	WaitForSingleObject(li->hProcess, INFINITE);
-	printf("Я дождусь завершения дочернего процесса\n");
 
 	GetExitCodeProcess(li->hProcess, &ecode);
 	CloseHandle(li->hProcess);

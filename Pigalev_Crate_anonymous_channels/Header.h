@@ -7,7 +7,7 @@
 
 struct Result
 {
-	char* equation; // Урвнение
-	char* d; // Дискриминант
-	char* answer; // Ответ
+	float x1;
+	float x2;
+	BOOL eror;
 };
